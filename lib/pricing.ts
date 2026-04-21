@@ -32,7 +32,7 @@ export function computeDeliveryFee(
   if (subtotal < PRICING.sameDay.minOrder) {
     return { fee: PRICING.sameDay.flat, minNotMet: PRICING.sameDay.minOrder };
   }
-  let fee = PRICING.sameDay.flat;
+  let fee: number = PRICING.sameDay.flat;
   if (subtotal >= PRICING.sameDay.freeOver && !priority) {
     fee = 0;
   }
