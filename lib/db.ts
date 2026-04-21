@@ -2,6 +2,7 @@ import Database from 'better-sqlite3';
 import path from 'path';
 import fs from 'fs';
 import { seedProducts, seedRecipes, seedDrivers, seedOrders } from './seed';
+// re-exports come from ./seed which combines seed-products-*.ts
 
 let _db: Database.Database | null = null;
 
