@@ -1,0 +1,130 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import 'leaflet/dist/leaflet.css';
+
+:root {
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+  --font-arabic: 'Amiri', 'Noto Naskh Arabic', serif;
+}
+
+html, body {
+  background: #faf5ec;
+  color: #0f1412;
+  -webkit-font-smoothing: antialiased;
+  font-family: var(--font-sans);
+}
+
+html { scroll-behavior: smooth; }
+
+.bg-parchment {
+  background-color: #faf5ec;
+  background-image:
+    radial-gradient(at 20% 10%, rgba(212, 154, 30, 0.08), transparent 50%),
+    radial-gradient(at 80% 90%, rgba(47, 127, 90, 0.08), transparent 55%);
+}
+
+.ornate-divider {
+  background:
+    linear-gradient(to right, transparent 0%, #d49a1e 20%, #d49a1e 80%, transparent 100%);
+  height: 1px;
+  position: relative;
+}
+.ornate-divider::before {
+  content: "✦";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  color: #d49a1e;
+  background: #faf5ec;
+  padding: 0 12px;
+  font-size: 14px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.2rem;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: transform .2s ease, box-shadow .2s ease, background-color .2s ease;
+}
+.btn-primary {
+  background: linear-gradient(135deg, #1d6448, #0f2e24);
+  color: #faf5ec;
+  box-shadow: 0 8px 24px -8px rgba(15, 46, 36, 0.5);
+}
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 12px 28px -8px rgba(15, 46, 36, 0.6); }
+.btn-gold {
+  background: linear-gradient(135deg, #e6b533, #b67816);
+  color: #0f1412;
+  box-shadow: 0 8px 24px -8px rgba(230, 181, 51, 0.55);
+}
+.btn-gold:hover { transform: translateY(-1px); }
+.btn-ghost {
+  background: transparent;
+  color: #0f2e24;
+  border: 1px solid rgba(15, 46, 36, 0.2);
+}
+.btn-ghost:hover { background: rgba(15, 46, 36, 0.04); }
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  background: rgba(230, 181, 51, 0.15);
+  color: #784519;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+.chip-emerald {
+  background: rgba(47, 127, 90, 0.12);
+  color: #134131;
+}
+
+.glass {
+  background: rgba(250, 245, 236, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.heading-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.015em;
+}
+
+.arabic { font-family: var(--font-arabic); direction: rtl; }
+
+.product-art {
+  position: relative;
+  overflow: hidden;
+}
+.product-art::after {
+  content: "";
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(circle at 30% 20%, rgba(255,255,255,0.25), transparent 50%);
+  pointer-events: none;
+}
+
+.scroll-x::-webkit-scrollbar { height: 8px; }
+.scroll-x::-webkit-scrollbar-thumb { background: rgba(15,46,36,0.18); border-radius: 999px; }
+.scroll-x::-webkit-scrollbar-track { background: transparent; }
+
+.leaflet-container { border-radius: 16px; }
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.marquee { animation: marquee 40s linear infinite; }
