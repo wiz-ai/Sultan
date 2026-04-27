@@ -35,16 +35,16 @@ export const products = {
     const existing = this.get(p.id);
     if (existing) {
       db().prepare(`UPDATE products
-        SET name=?, nameAr=?, description=?, category=?, subcategory=?, price=?, unit=?, stock=?, badges=?, emoji=?, gradient=?, origin=?
+        SET name=?, nameAr=?, description=?, category=?, subcategory=?, price=?, unit=?, stock=?, badges=?, emoji=?, gradient=?, imageUrl=?, origin=?
         WHERE id=?`).run(
           p.name, p.nameAr ?? null, p.description, p.category, p.subcategory ?? null,
-          p.price, p.unit, p.stock, badges, p.emoji, p.gradient, p.origin ?? null, p.id
+          p.price, p.unit, p.stock, badges, p.emoji, p.gradient, p.imageUrl ?? null, p.origin ?? null, p.id
         );
     } else {
-      db().prepare(`INSERT INTO products (id,name,nameAr,description,category,subcategory,price,unit,stock,badges,emoji,gradient,origin)
-        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)`).run(
+      db().prepare(`INSERT INTO products (id,name,nameAr,description,category,subcategory,price,unit,stock,badges,emoji,gradient,imageUrl,origin)
+        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`).run(
           p.id, p.name, p.nameAr ?? null, p.description, p.category, p.subcategory ?? null,
-          p.price, p.unit, p.stock, badges, p.emoji, p.gradient, p.origin ?? null
+          p.price, p.unit, p.stock, badges, p.emoji, p.gradient, p.imageUrl ?? null, p.origin ?? null
         );
     }
     return this.get(p.id)!;

@@ -21,6 +21,7 @@ export interface Product {
   badges?: string[]; // e.g., "halal", "organic", "imported"
   emoji: string;
   gradient: string; // tailwind gradient classes for card art
+  imageUrl?: string;
   origin?: string;
 }
 

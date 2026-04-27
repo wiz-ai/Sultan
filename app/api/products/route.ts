@@ -32,6 +32,7 @@ export async function POST(req: NextRequest) {
     badges: body.badges ?? [],
     emoji: body.emoji || '🛒',
     gradient: body.gradient || 'from-sultan-emerald-500 to-sultan-emerald-800',
+    imageUrl: body.imageUrl,
     origin: body.origin,
   };
   return NextResponse.json({ product: products.upsert(p) });

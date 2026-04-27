@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import type { Product, Order, Category } from '@/lib/types';
 import { usd, cn } from '@/lib/utils';
-import { Pencil, Trash2, Plus, Package, ShieldCheck, DollarSign, TrendingUp, X, Save } from 'lucide-react';
+import { Camera, ImagePlus, Pencil, Trash2, Plus, Package, ShieldCheck, DollarSign, TrendingUp, X, Save } from 'lucide-react';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 
 const DEFAULT_PRODUCT: Partial<Product> = {
@@ -15,6 +15,7 @@ const DEFAULT_PRODUCT: Partial<Product> = {
   stock: 10,
   emoji: '🛒',
   gradient: 'from-sultan-emerald-500 to-sultan-emerald-800',
+  imageUrl: '',
   badges: [],
 };
 
@@ -275,6 +276,14 @@ function ProductEditor({
     'from-stone-700 to-stone-950',
     'from-lime-500 to-green-800',
   ];
+
+  function readPhoto(file: File | undefined) {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => onChange({ ...product, imageUrl: String(reader.result) });
+    reader.readAsDataURL(file);
+  }
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
       <div className="bg-sultan-cream rounded-3xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
@@ -285,11 +294,45 @@ function ProductEditor({
           </button>
         </div>
         <div className="p-5 space-y-4">
-          <div className="grid grid-cols-[80px_1fr] gap-3 items-start">
-            <div className={`aspect-square rounded-2xl bg-gradient-to-br ${product.gradient} flex items-center justify-center text-4xl`}>
-              {product.emoji}
+          <div className="grid grid-cols-[120px_1fr] gap-3 items-start">
+            <div className={`aspect-square rounded-2xl bg-gradient-to-br ${product.gradient} flex items-center justify-center text-4xl overflow-hidden ring-1 ring-sultan-sand`}>
+              {product.imageUrl ? (
+                <img src={product.imageUrl} alt={product.name ?? 'Product preview'} className="h-full w-full object-cover" />
+              ) : (
+                product.emoji
+              )}
             </div>
             <div className="space-y-2">
+              <div className="grid grid-cols-2 gap-2">
+                <label className="btn btn-ghost !justify-center !py-2 cursor-pointer">
+                  <ImagePlus className="w-4 h-4" /> Upload
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => readPhoto(e.target.files?.[0])}
+                  />
+                </label>
+                <label className="btn btn-ghost !justify-center !py-2 cursor-pointer">
+                  <Camera className="w-4 h-4" /> Camera
+                  <input
+                    type="file"
+                    accept="image/*"
+                    capture="environment"
+                    className="hidden"
+                    onChange={(e) => readPhoto(e.target.files?.[0])}
+                  />
+                </label>
+              </div>
+              {product.imageUrl && (
+                <button
+                  type="button"
+                  onClick={() => onChange({ ...product, imageUrl: '' })}
+                  className="text-xs font-medium text-sultan-spice"
+                >
+                  Remove photo and use emoji art
+                </button>
+              )}
               <label className="block">
                 <span className="text-xs uppercase tracking-wider text-sultan-ink/60">Emoji</span>
                 <input
@@ -316,6 +359,7 @@ function ProductEditor({
           <Field label="Name" value={product.name ?? ''} onChange={(v) => onChange({ ...product, name: v })} />
           <Field label="Arabic name (optional)" value={product.nameAr ?? ''} onChange={(v) => onChange({ ...product, nameAr: v })} />
           <Field label="Description" value={product.description ?? ''} onChange={(v) => onChange({ ...product, description: v })} textarea />
+          <Field label="Photo URL (optional)" value={product.imageUrl ?? ''} onChange={(v) => onChange({ ...product, imageUrl: v })} />
           <div className="grid grid-cols-2 gap-3">
             <label className="block">
               <span className="text-xs uppercase tracking-wider text-sultan-ink/60">Category</span>

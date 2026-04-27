@@ -25,8 +25,16 @@ export function ProductCard({ product, compact = false }: { product: Product; co
         compact ? 'w-56 shrink-0' : ''
       )}
     >
-      <div className={cn('product-art aspect-[4/3] bg-gradient-to-br flex items-center justify-center', product.gradient)}>
-        <span className="text-7xl drop-shadow-lg">{product.emoji}</span>
+      <div className={cn('product-art aspect-[4/3] bg-gradient-to-br flex items-center justify-center overflow-hidden', product.gradient)}>
+        {product.imageUrl ? (
+          <img
+            src={product.imageUrl}
+            alt={product.name}
+            className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+          />
+        ) : (
+          <span className="text-7xl drop-shadow-lg">{product.emoji}</span>
+        )}
         {product.badges && product.badges.length > 0 && (
           <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
             {product.badges.slice(0, 2).map((b) => (

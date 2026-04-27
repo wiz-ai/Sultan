@@ -43,6 +43,7 @@ function migrate(d: Database.Database) {
       badges TEXT,
       emoji TEXT NOT NULL,
       gradient TEXT NOT NULL,
+      imageUrl TEXT,
       origin TEXT
     );
 
@@ -99,6 +100,10 @@ function migrate(d: Database.Database) {
     );
     CREATE INDEX IF NOT EXISTS idx_chat_user ON chat_messages(userId, createdAt);
   `);
+  const productColumns = d.prepare('PRAGMA table_info(products)').all() as { name: string }[];
+  if (!productColumns.some((column) => column.name === 'imageUrl')) {
+    d.prepare('ALTER TABLE products ADD COLUMN imageUrl TEXT').run();
+  }
 }
 
 function seedIfEmpty(d: Database.Database) {
@@ -106,8 +111,8 @@ function seedIfEmpty(d: Database.Database) {
   if (row.c > 0) return;
 
   const insProduct = d.prepare(
-    `INSERT INTO products (id,name,nameAr,description,category,subcategory,price,unit,stock,badges,emoji,gradient,origin)
-     VALUES (@id,@name,@nameAr,@description,@category,@subcategory,@price,@unit,@stock,@badges,@emoji,@gradient,@origin)`
+    `INSERT INTO products (id,name,nameAr,description,category,subcategory,price,unit,stock,badges,emoji,gradient,imageUrl,origin)
+     VALUES (@id,@name,@nameAr,@description,@category,@subcategory,@price,@unit,@stock,@badges,@emoji,@gradient,@imageUrl,@origin)`
   );
   const pTx = d.transaction((rows: any[]) => {
     for (const r of rows) {
@@ -116,6 +121,7 @@ function seedIfEmpty(d: Database.Database) {
         nameAr: r.nameAr ?? null,
         subcategory: r.subcategory ?? null,
         badges: JSON.stringify(r.badges ?? []),
+        imageUrl: r.imageUrl ?? null,
         origin: r.origin ?? null,
       });
     }
