@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { Navbar } from '@/components/Navbar';
 import { ChatLauncher } from '@/components/ChatLauncher';
+import { AuthProvider } from '@/lib/auth';
 
 export const metadata: Metadata = {
   title: 'Sultan — Tampa\'s Finest Middle Eastern Grocery',
@@ -26,10 +27,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className="bg-parchment min-h-screen antialiased">
-        <Navbar />
-        <main className="min-h-[calc(100vh-80px)]">{children}</main>
-        <ChatLauncher />
-        <footer className="border-t border-sultan-sand/60 mt-24">
+        <AuthProvider>
+          <Navbar />
+          <main className="min-h-[calc(100vh-80px)]">{children}</main>
+          <ChatLauncher />
+          <footer className="border-t border-sultan-sand/60 mt-24">
           <div className="mx-auto max-w-7xl px-6 py-12 grid md:grid-cols-4 gap-8 text-sm">
             <div>
               <div className="heading-display text-2xl text-sultan-emerald-800">Sultan</div>
@@ -65,7 +67,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <div className="border-t border-sultan-sand/60 py-4 text-center text-xs text-sultan-ink/50">
             © {new Date().getFullYear()} Sultan Market. All rights reserved.
           </div>
-        </footer>
+          </footer>
+        </AuthProvider>
       </body>
     </html>
   );

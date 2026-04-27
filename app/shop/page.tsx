@@ -1,6 +1,7 @@
 'use client';
 import { Suspense, useEffect, useMemo, useState } from 'react';
 import { ProductCard } from '@/components/ProductCard';
+import { ChatAssistantPanel } from '@/components/ChatLauncher';
 import { CategoryPill, CATEGORIES } from '@/components/CategoryPill';
 import type { Product, Category } from '@/lib/types';
 import { Search, SlidersHorizontal } from 'lucide-react';
@@ -50,6 +51,21 @@ function ShopInner() {
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-10">
+      <section className="mb-8 grid lg:grid-cols-[360px_1fr] gap-5 rounded-[2rem] bg-sultan-emerald-950 p-5 text-sultan-cream shadow-card">
+        <div className="flex flex-col justify-center">
+          <div className="chip !bg-sultan-gold-400/20 !text-sultan-gold-200 mb-4">
+            Ask first
+          </div>
+          <h1 className="heading-display text-4xl leading-tight">
+            Shop with Sultan Assistant
+          </h1>
+          <p className="mt-3 text-sm text-sultan-cream/70">
+            Describe a meal, a craving, or a pantry restock. The assistant helps you choose before you scroll.
+          </p>
+        </div>
+        <ChatAssistantPanel className="min-h-[420px] rounded-[1.5rem] ring-1 ring-sultan-gold-300/40" />
+      </section>
+
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
         <div>
           <div className="chip chip-emerald mb-3">The aisles</div>

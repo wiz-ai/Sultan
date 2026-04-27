@@ -5,11 +5,13 @@ import { computeTotals, PRICING, deliveryWindows } from '@/lib/pricing';
 import type { DeliveryType } from '@/lib/types';
 import { usd } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
-import { CheckCircle2, Clock, Zap, Truck, Lock } from 'lucide-react';
+import { CheckCircle2, Clock, Zap, Truck, Lock, UserPlus } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/lib/auth';
 
 export default function CheckoutPage() {
   const router = useRouter();
+  const { user, createCustomerAccount } = useAuth();
   const lines = useCart((s) => s.lines);
   const subtotal = useCart((s) => s.subtotal());
   const clear = useCart((s) => s.clear);
@@ -18,6 +20,9 @@ export default function CheckoutPage() {
   const [phone, setPhone] = useState('+1-813-555-0000');
   const [address, setAddress] = useState('3800 W Platt St, Tampa, FL 33609');
   const [notes, setNotes] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [accountError, setAccountError] = useState('');
 
   const windows = useMemo(() => deliveryWindows(), []);
   const [windowId, setWindowId] = useState(windows[0]?.id);
@@ -33,6 +38,15 @@ export default function CheckoutPage() {
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     if (!lines.length) return;
+    let orderUser = user;
+    if (!orderUser) {
+      if (!phone.trim() || password.length < 6) {
+        setAccountError('Add a phone number and a password with at least 6 characters to create your account.');
+        return;
+      }
+      orderUser = createCustomerAccount({ name, phone, email, password });
+    }
+    setAccountError('');
     setSubmitting(true);
     try {
       const res = await fetch('/api/orders', {
@@ -40,6 +54,7 @@ export default function CheckoutPage() {
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({
           customerName: name,
+          userId: orderUser.id,
           phone,
           address,
           notes,
@@ -96,6 +111,36 @@ export default function CheckoutPage() {
 
       <form onSubmit={submit} className="grid md:grid-cols-[1fr_400px] gap-8">
         <div className="space-y-8">
+          {!user && (
+            <section className="bg-white rounded-3xl p-6 ring-1 ring-sultan-sand/60 space-y-4">
+              <div className="flex items-center gap-2 font-semibold">
+                <UserPlus className="w-4 h-4" /> Create your account to checkout
+              </div>
+              <p className="text-sm text-sultan-ink/60">
+                You can shop as a guest. To place the order, we need a phone number and password so you can track it later.
+              </p>
+              <div className="grid sm:grid-cols-2 gap-4">
+                <Field label="Phone" value={phone} onChange={setPhone} />
+                <Field label="Email (optional)" value={email} onChange={setEmail} />
+              </div>
+              <label className="block">
+                <span className="text-xs uppercase tracking-wider text-sultan-ink/60">Password</span>
+                <input
+                  value={password}
+                  type="password"
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="mt-1 block w-full rounded-xl bg-sultan-parchment/60 ring-1 ring-sultan-sand px-3 py-2 outline-none focus:ring-sultan-emerald-500"
+                  placeholder="At least 6 characters"
+                />
+              </label>
+              {accountError && (
+                <div className="rounded-2xl bg-sultan-spice/10 px-4 py-3 text-sm text-sultan-spice">
+                  {accountError}
+                </div>
+              )}
+            </section>
+          )}
+
           {/* Delivery window selection */}
           <section className="bg-white rounded-3xl p-6 ring-1 ring-sultan-sand/60">
             <div className="flex items-center gap-2 font-semibold mb-4">

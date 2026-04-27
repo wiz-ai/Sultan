@@ -4,6 +4,8 @@ import type { Order } from '@/lib/types';
 import { usd, formatDate, cn } from '@/lib/utils';
 import { Package, Truck, CheckCircle2, Clock, MapPin, Phone, MessageCircle } from 'lucide-react';
 import Link from 'next/link';
+import { ProtectedRoute } from '@/components/ProtectedRoute';
+import { useAuth } from '@/lib/auth';
 
 const STATUS_META: Record<Order['status'], { label: string; color: string; icon: any }> = {
   pending: { label: 'Pending', color: 'bg-stone-400 text-white', icon: Clock },
@@ -15,21 +17,24 @@ const STATUS_META: Record<Order['status'], { label: string; color: string; icon:
 };
 
 export default function AccountPage() {
+  const { user } = useAuth();
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/orders?userId=u-demo')
+    if (!user) return;
+    fetch(`/api/orders?userId=${user.id}`)
       .then((r) => r.json())
       .then((d) => setOrders(d.orders))
       .finally(() => setLoading(false));
-  }, []);
+  }, [user]);
 
   return (
+    <ProtectedRoute allowed={['user', 'admin']}>
     <div className="mx-auto max-w-5xl px-6 py-10">
       <div className="chip chip-emerald mb-3">Your account</div>
       <h1 className="heading-display text-4xl md:text-5xl text-sultan-emerald-900">
-        Ahlan, Amira 👋
+        Ahlan, {user?.name ?? 'friend'} 👋
       </h1>
       <p className="text-sultan-ink/70 mt-2">Here's what's on the way and what we've saved for you.</p>
 
@@ -115,6 +120,7 @@ export default function AccountPage() {
         </div>
       </section>
     </div>
+    </ProtectedRoute>
   );
 }
 

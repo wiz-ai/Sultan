@@ -5,6 +5,8 @@ import type { Driver, Order } from '@/lib/types';
 import type { OptimizedRoute, Stop } from '@/lib/route';
 import { Truck, Clock, MapPin, Phone, CheckCircle2, Route, Navigation } from 'lucide-react';
 import { usd, cn } from '@/lib/utils';
+import { ProtectedRoute } from '@/components/ProtectedRoute';
+import { useAuth } from '@/lib/auth';
 
 // Leaflet needs to be client-only (uses window).
 const DeliveryMap = dynamic(() => import('@/components/DeliveryMap'), {
@@ -23,6 +25,7 @@ interface DeliveryData {
 }
 
 export default function DriverPage() {
+  const { user } = useAuth();
   const [data, setData] = useState<DeliveryData | null>(null);
   const [driverId, setDriverId] = useState('d-omar');
   const [loading, setLoading] = useState(true);
@@ -36,8 +39,13 @@ export default function DriverPage() {
   }
 
   useEffect(() => {
+    if (!user) return;
+    if (user.role === 'driver' && user.driverId && driverId !== user.driverId) {
+      setDriverId(user.driverId);
+      return;
+    }
     load();
-  }, [driverId]);
+  }, [driverId, user]);
 
   async function markDelivered(orderId: string) {
     await fetch(`/api/orders/${orderId}`, {
@@ -49,6 +57,7 @@ export default function DriverPage() {
   }
 
   return (
+    <ProtectedRoute allowed={['driver', 'admin']}>
     <div className="mx-auto max-w-7xl px-6 py-10">
       <div className="flex items-center gap-3 mb-6">
         <div className="w-11 h-11 rounded-2xl bg-sultan-emerald-900 text-sultan-cream flex items-center justify-center">
@@ -58,6 +67,7 @@ export default function DriverPage() {
           <div className="chip">Driver view</div>
           <h1 className="heading-display text-4xl text-sultan-emerald-900 mt-1">Route for today</h1>
         </div>
+        {user?.role === 'admin' && (
         <div className="ml-auto flex items-center gap-2">
           <span className="text-sm text-sultan-ink/60">Driver:</span>
           {data?.allDrivers.map((d) => (
@@ -74,6 +84,7 @@ export default function DriverPage() {
             </button>
           ))}
         </div>
+        )}
       </div>
 
       {data && (
@@ -181,6 +192,7 @@ export default function DriverPage() {
         </aside>
       </div>
     </div>
+    </ProtectedRoute>
   );
 }
 

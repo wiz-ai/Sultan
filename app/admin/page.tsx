@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import type { Product, Order, Category } from '@/lib/types';
 import { usd, cn } from '@/lib/utils';
 import { Pencil, Trash2, Plus, Package, ShieldCheck, DollarSign, TrendingUp, X, Save } from 'lucide-react';
+import { ProtectedRoute } from '@/components/ProtectedRoute';
 
 const DEFAULT_PRODUCT: Partial<Product> = {
   name: '',
@@ -76,6 +77,7 @@ export default function AdminPage() {
   const activeOrders = orders.filter((o) => o.status !== 'delivered' && o.status !== 'canceled').length;
 
   return (
+    <ProtectedRoute allowed={['admin']}>
     <div className="mx-auto max-w-7xl px-6 py-10">
       <div className="flex items-center gap-3 mb-6">
         <div className="w-11 h-11 rounded-2xl bg-sultan-emerald-900 text-sultan-cream flex items-center justify-center">
@@ -219,6 +221,7 @@ export default function AdminPage() {
         />
       )}
     </div>
+    </ProtectedRoute>
   );
 }
 

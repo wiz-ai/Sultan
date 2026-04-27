@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { ProductCard } from '@/components/ProductCard';
+import { ChatAssistantPanel } from '@/components/ChatLauncher';
 import { products, recipes } from '@/lib/repo';
 import { ArrowRight, Sparkles, Clock, Truck, ShieldCheck, Leaf } from 'lucide-react';
 
@@ -22,6 +23,23 @@ export default function Home() {
 
   return (
     <>
+      <section className="mx-auto max-w-7xl px-6 pt-8">
+        <div className="grid lg:grid-cols-[0.8fr_1.2fr] gap-8 items-center rounded-[2.5rem] bg-sultan-emerald-950 p-6 md:p-8 text-sultan-cream shadow-2xl">
+          <div>
+            <div className="chip !bg-sultan-gold-400/20 !text-sultan-gold-200 mb-4">
+              <Sparkles className="w-3.5 h-3.5" /> AI first shopping
+            </div>
+            <h2 className="heading-display text-4xl leading-tight">
+              Start with the assistant, then fill the cart.
+            </h2>
+            <p className="mt-4 text-sultan-cream/70">
+              Ask for dinner ideas, Arabic pantry staples, delivery timing, or a full ingredient list. This is the front door of the Sultan experience.
+            </p>
+          </div>
+          <ChatAssistantPanel featured />
+        </div>
+      </section>
+
       {/* ── Hero ────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-pattern-arabesque opacity-60 pointer-events-none" />
