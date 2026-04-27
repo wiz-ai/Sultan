@@ -24,15 +24,15 @@ export default function Home() {
   return (
     <>
       <section className="mx-auto max-w-7xl px-6 pt-8">
-        <div className="grid lg:grid-cols-[0.8fr_1.2fr] gap-8 items-center rounded-[2.5rem] bg-sultan-emerald-950 p-6 md:p-8 text-sultan-cream shadow-2xl">
-          <div>
-            <div className="chip !bg-sultan-gold-400/20 !text-sultan-gold-200 mb-4">
+        <div className="grid lg:grid-cols-[0.9fr_1.1fr] gap-8 items-center rounded-[2rem] bg-gradient-to-br from-sultan-emerald-900 via-sultan-emerald-800 to-sultan-ink p-6 md:p-8 text-sultan-cream shadow-2xl ring-1 ring-sultan-gold-300/20">
+          <div className="max-w-lg">
+            <div className="chip !bg-sultan-gold-400/20 !text-sultan-gold-100 mb-4">
               <Sparkles className="w-3.5 h-3.5" /> AI first shopping
             </div>
-            <h2 className="heading-display text-4xl leading-tight">
+            <h2 className="heading-display text-4xl md:text-5xl leading-tight">
               Start with the assistant, then fill the cart.
             </h2>
-            <p className="mt-4 text-sultan-cream/70">
+            <p className="mt-4 text-sultan-cream/80 leading-relaxed">
               Ask for dinner ideas, Arabic pantry staples, delivery timing, or a full ingredient list. This is the front door of the Sultan experience.
             </p>
           </div>
@@ -144,7 +144,7 @@ export default function Home() {
 
       {/* ── Recipes teaser ──────────────────────────────────────── */}
       <section className="mx-auto max-w-7xl px-6 py-16">
-        <div className="rounded-[2.5rem] bg-gradient-to-br from-sultan-emerald-900 to-sultan-emerald-950 text-sultan-cream p-10 md:p-14 relative overflow-hidden">
+        <div className="rounded-[2.5rem] bg-gradient-to-br from-sultan-emerald-900 to-sultan-ink text-sultan-cream p-10 md:p-14 relative overflow-hidden">
           <div className="absolute inset-0 bg-pattern-arabesque opacity-20" />
           <div className="relative grid md:grid-cols-2 gap-10 items-center">
             <div>

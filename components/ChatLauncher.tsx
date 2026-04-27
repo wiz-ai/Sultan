@@ -119,12 +119,12 @@ export function ChatAssistantPanel({
       className={cn(
         'bg-sultan-cream overflow-hidden flex flex-col',
         featured
-          ? 'min-h-[540px] rounded-[2rem] shadow-2xl ring-1 ring-sultan-gold-300/60'
+          ? 'min-h-[430px] rounded-[1.5rem] shadow-2xl ring-1 ring-sultan-gold-300/60'
           : 'h-full',
         className
       )}
     >
-      <div className={cn('p-4 bg-gradient-to-br from-sultan-emerald-800 to-sultan-emerald-950 text-sultan-cream', featured && 'p-5')}>
+      <div className={cn('p-4 bg-gradient-to-br from-sultan-emerald-800 to-sultan-ink text-sultan-cream', featured && 'p-5')}>
         <div className="flex items-center justify-between gap-3">
           <div className="flex items-center gap-2.5 min-w-0">
             <div className="w-9 h-9 rounded-full bg-sultan-gold-400/20 flex items-center justify-center shrink-0">
@@ -157,7 +157,7 @@ export function ChatAssistantPanel({
 
         {featured && (
           <div className="mt-5">
-            <div className="heading-display text-3xl leading-tight">Tell us what you want to cook.</div>
+            <div className="heading-display text-2xl leading-tight">Tell us what you want to cook.</div>
             <p className="mt-2 text-sm text-sultan-cream/70">
               The assistant can suggest products, build recipe ideas, and answer delivery questions before you browse the aisles.
             </p>
@@ -165,7 +165,7 @@ export function ChatAssistantPanel({
         )}
       </div>
 
-      <div ref={scrollRef} className={cn('flex-1 overflow-y-auto p-4 space-y-3 bg-parchment', featured && 'min-h-[260px]')}>
+      <div ref={scrollRef} className={cn('flex-1 overflow-y-auto p-4 space-y-3 bg-parchment', featured && 'min-h-[170px]')}>
         {messages.map((m, i) => (
           <div key={i} className={cn('flex', m.role === 'user' ? 'justify-end' : 'justify-start')}>
             <div
